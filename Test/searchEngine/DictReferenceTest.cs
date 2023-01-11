@@ -45,6 +45,20 @@ public class DictReferenceUnitTest
         return new DictReference<char>(conditionCounts);
     }
 
+    [TestMethod]
+    public void TrayApply1_ReturnBoolCorrectly_TestHorizontally()
+    {
+        /// {'a', 2}, {'b', 1}, {'c', 3}
+        DictReference<char> dictReference = this.GetDictReference1();
+
+        char[] keys = new char[]{'a', 'b', 'c', 'd', 'e'};
+        bool[] expectedBools = new bool[]{true,true,true,false,false};
+
+        for(int i = 0; i < 5; i++)
+        {
+            Assert.AreEqual(dictReference.TryApply(keys[i]), expectedBools[i]);
+        }
+    }
     
 
 }
