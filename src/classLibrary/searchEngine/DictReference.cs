@@ -54,7 +54,7 @@ namespace SearchEngine
         {
             if(_conditionInfo!.ContainsKey(target))
             {
-                if(_conditionInfo[target]++ == 1)
+                if(++_conditionInfo[target] == 1)
                     _uncoveredConditionCount++;
                 return true;
             }

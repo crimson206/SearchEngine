@@ -111,4 +111,22 @@ public class DictReferenceUnitTest
             Assert.AreEqual(dictReference.GetConditionInfoCopy['a'],expectedConditionToTarget[i]);
         }
     }
+
+    [TestMethod]
+    public void TryApply1_TryDeApply2_ChangeUncoveredConditionCount()
+    {
+        /// {'a', 2}, {'b', 1}, {'c', 3}
+        DictReference<char> dictReference = this.GetDictReference1();
+        DelTryApply1OrDeApply1[] apl_deApl = this.GetDelTryApply1AndDeApply1(dictReference);
+
+        int[] sequence = new int[]{0, 0, 0, 1, 1, 1, 0, 0, 0};
+        int[] expectedUncoveredConditionCounts = new int[]{3,2,2,2,3,3,3,2,2};
+
+        for(int i = 0; i < sequence.Length; i++)
+        {
+            apl_deApl[sequence[i]]('a');
+            Assert.AreEqual(dictReference.UncoveredConditionCount,expectedUncoveredConditionCounts[i]);
+        }
+    }
+
 }
