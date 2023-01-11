@@ -46,7 +46,7 @@ public class DictReferenceUnitTest
     }
 
     [TestMethod]
-    public void TryApply1_ReturnBoolCorrectly_TestHorizontally()
+    public void TryApply1_TryDeApply1_ReturnBoolCorrectly_TestHorizontally()
     {
         /// {'a', 2}, {'b', 1}, {'c', 3}
         DictReference<char> dictReference = this.GetDictReference1();
@@ -76,7 +76,7 @@ public class DictReferenceUnitTest
     }
 
     [TestMethod]
-    public void TryApply1_TryDeApply2_ReturnBoolCorrectly_TestVertically()
+    public void TryApply1_TryDeApply1_ReturnBoolCorrectly_TestVertically()
     {
         /// {'a', 2}, {'b', 1}, {'c', 3}
         DictReference<char> dictReference = this.GetDictReference1();
@@ -96,7 +96,7 @@ public class DictReferenceUnitTest
     }
 
     [TestMethod]
-    public void TryApply1_TryDeApply2_ChangePartialConditionCorrectly()
+    public void TryApply1_TryDeApply1_ChangeConditionInfoCorrectly()
     {
         /// {'a', 2}, {'b', 1}, {'c', 3}
         DictReference<char> dictReference = this.GetDictReference1();
@@ -113,7 +113,7 @@ public class DictReferenceUnitTest
     }
 
     [TestMethod]
-    public void TryApply1_TryDeApply2_ChangeUncoveredConditionCount()
+    public void TryApply1_TryDeApply1_ChangeUncoveredConditionCount()
     {
         /// {'a', 2}, {'b', 1}, {'c', 3}
         DictReference<char> dictReference = this.GetDictReference1();
@@ -129,4 +129,21 @@ public class DictReferenceUnitTest
         }
     }
 
+    [TestMethod]
+    public void TryApply2_TryDeApply2_DetectPartialConditionChangeCorrectly()
+    {
+        /// {'a', 2}, {'b', 1}, {'c', 3}
+        DictReference<char> dictReference = this.GetDictReference1();
+        DelTryApply2OrDeApply2[] ap2_deAp2 = this.GetDelTryApply2AndDeApply2(dictReference);
+
+        int[] sequence = {0, 0, 0, 1, 1, 1, 0, 0, 0};
+        bool[] expectedDetection = {false, true, false, false, true, false, false, true, false};
+        bool partialConditionChanged = false;
+
+        for(int i = 0; i < sequence.Length; i++)
+        {
+            ap2_deAp2[sequence[i]]('a',out partialConditionChanged);
+            Assert.AreEqual(expectedDetection[i],partialConditionChanged);
+        }
+    }
 }
