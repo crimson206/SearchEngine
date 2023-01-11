@@ -46,7 +46,7 @@ public class DictReferenceUnitTest
     }
 
     [TestMethod]
-    public void TrayApply1_ReturnBoolCorrectly_TestHorizontally()
+    public void TryApply1_ReturnBoolCorrectly_TestHorizontally()
     {
         /// {'a', 2}, {'b', 1}, {'c', 3}
         DictReference<char> dictReference = this.GetDictReference1();
@@ -59,6 +59,40 @@ public class DictReferenceUnitTest
             Assert.AreEqual(dictReference.TryApply(keys[i]), expectedBools[i]);
         }
     }
-    
+
+    public delegate bool DelTryApply1OrDeApply1 (char target);
+    public delegate bool DelTryApply2OrDeApply2 (char target, out bool output);
+    public DelTryApply1OrDeApply1[] GetDelTryApply1AndDeApply1(DictReference<char> target)
+    {
+        DelTryApply1OrDeApply1 delTryApply1 = target.TryApply;
+        DelTryApply1OrDeApply1 delTryDeApply1 = target.TryDeApply;
+        return new DelTryApply1OrDeApply1[]{delTryApply1,delTryDeApply1};
+    }
+    public DelTryApply2OrDeApply2[] GetDelTryApply2AndDeApply2(DictReference<char> target)
+    {
+        DelTryApply2OrDeApply2 delTryApply1 = target.TryApply;
+        DelTryApply2OrDeApply2 delTryDeApply1 = target.TryDeApply;
+        return new DelTryApply2OrDeApply2[]{delTryApply1,delTryDeApply1};
+    }
+
+    [TestMethod]
+    public void TryApply1_TryDeApply2_ReturnBoolCorrectly_TestVertically()
+    {
+        /// {'a', 2}, {'b', 1}, {'c', 3}
+        DictReference<char> dictReference = this.GetDictReference1();
+        DelTryApply1OrDeApply1[] apl_deApl = this.GetDelTryApply1AndDeApply1(dictReference);
+
+        int[] sequence = new int[]{0, 0, 0, 1, 1, 1, 0, 0, 0};
+        string chars = "cd";
+        bool[] expectedBools = new bool[]{true, false};
+
+        for(int i = 0; i < sequence.Length; i++)
+        {
+            for(int j = 0; j < 2; j++)
+            {
+                Assert.AreEqual(apl_deApl[sequence[i]](chars[j]),expectedBools[j]);
+            }
+        }
+    }
 
 }
