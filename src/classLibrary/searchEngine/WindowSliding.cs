@@ -119,26 +119,26 @@ namespace SearchEngine
         public void PushRightIndex()
         {
             _rightIndex++;
-            _reference.TryDeApply(_item[_rightIndex]);
+            _reference.TryApply(_item[_rightIndex]);
         }
 
         public void PushRightIndex(out bool metPartialCondition)
         {
             _rightIndex++;
-            _reference.TryDeApply(_item[_rightIndex], out metPartialCondition);
+            _reference.TryApply(_item[_rightIndex], out metPartialCondition);
         }
 
         public void PushLeftIndex()
         {
             _leftIndex++;
-            _reference.TryApply(_item[_leftIndex]);
+            _reference.TryDeApply(_item[_leftIndex]);
         }
 
         public void PushLeftIndex(out bool brokePartialCondition)
         {
             brokePartialCondition = false;
             _leftIndex++;
-            _reference.TryApply(_item[_leftIndex], out brokePartialCondition);
+            _reference.TryDeApply(_item[_leftIndex], out brokePartialCondition);
         }
 
         private void ResetIndeces()

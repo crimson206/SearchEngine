@@ -12,6 +12,7 @@ namespace SearchEngine
         {
             _conditionInfo = conditionInfo;
             _uncoveredConditionCount = conditionInfo.Count;
+            _totalConditionCount = conditionInfo.Count;
         }
 
         public int UncoveredConditionCount { get => _uncoveredConditionCount;}
@@ -25,11 +26,11 @@ namespace SearchEngine
             }
         }
 
-        public bool TryDeApply(T target)
+        public bool TryApply(T target)
         {
             if(_conditionInfo!.ContainsKey(target))
             {
-                if(_conditionInfo[target]-- == 0)
+                if(--_conditionInfo[target] == 0)
                     _uncoveredConditionCount--;
                 return true;
             }
@@ -37,11 +38,11 @@ namespace SearchEngine
                 return false;
         }
 
-        public bool TryDeApply(T target, out bool metPartialCondition)
+        public bool TryApply(T target, out bool metPartialCondition)
         {
             metPartialCondition = false;
             int temp = _uncoveredConditionCount;
-            bool succeed = TryDeApply(target);
+            bool succeed = TryApply(target);
             if(temp != _uncoveredConditionCount)
                 metPartialCondition = true;
             
@@ -49,7 +50,7 @@ namespace SearchEngine
         }
 
 
-        public bool TryApply(T target)
+        public bool TryDeApply(T target)
         {
             if(_conditionInfo!.ContainsKey(target))
             {
@@ -61,11 +62,11 @@ namespace SearchEngine
                 return false;
         }
 
-        public bool TryApply(T target, out bool brokePartialCondition)
+        public bool TryDeApply(T target, out bool brokePartialCondition)
         {
             brokePartialCondition = false;
             int temp = _uncoveredConditionCount;
-            bool succeed = TryApply(target);
+            bool succeed = TryDeApply(target);
             if(temp != _uncoveredConditionCount)
                 brokePartialCondition = true;
             return succeed;
